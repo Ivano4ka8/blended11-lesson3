@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchTodos, addTodo, deleteTodo } from './operations';
+import { fetchTodos, addTodo, deleteTodo, editTodo } from './operations';
 
 const todosSlice = createSlice({
   // Имя слайса
@@ -42,6 +42,15 @@ const todosSlice = createSlice({
     [deleteTodo.rejected](state, action) {
       state.loading = false;
       state.error = action.payload;
+    },
+    [editTodo.fulfilled](state, action) {
+      state.loading = false;
+      const editTodoIndex = state.items.findIndex(
+        item => item.id === action.payload.id
+      );
+      if (editTodoIndex !== -1) {
+        state.items[editTodoIndex] = action.payload;
+      }
     },
   },
 });
